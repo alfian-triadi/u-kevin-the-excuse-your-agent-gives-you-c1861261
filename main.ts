@@ -35,6 +35,11 @@ function validateEntry(entry: string): void {
   if (entry !== entry.trim()) {
     throw new Error("entry must not have leading/trailing whitespace");
   }
+  // Invisible control characters would survive the single-line gate but
+  // print as junk (or nothing) in the judge's view — reject them outright.
+  if (/[\u0000-\u001f\u007f]/.test(entry)) {
+    throw new Error("entry must not contain control characters");
+  }
 }
 
 const LINE =
